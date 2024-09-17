@@ -1,67 +1,103 @@
-# Your First Express and React App with Vite
- ⚡ Create a working full stack app with React and Express in minutes by running your client using Vite, your server using Express, and dumping your db in the template ⚡
+# Eventonica
 
-## Step by Step instructions - To use this project as your start point  🚀  
-### To create the whole project
+Eventonica is a web application built with React and Express.js that allows users to manage events. Users can view, add, update, and delete events stored in a PostgreSQL database. The project demonstrates a full-stack setup, including a frontend for interacting with the event data and a backend API to handle data persistence.
 
+## Table of Contents
 
-1. Go to your source directory in your terminal and run the command `git clone https://github.com/Yosolita1978/Template2023React-Vite.git NAMENEWDIRECTORY`
+- [Features](#features)
+- [Technologies](#technologies)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Endpoints](#api-endpoints)
+- [Contributing](#contributing)
 
-2. To clean the owner git out of the main directory, run the command `rm -rf .git`
+## Features
 
-3. Then while still within the main directory in your terminal, run the command `git init` to start your own git track 
+- **Add Events**: Users can create new events with a name, date, and location.
+- **View Events**: Display a list of all events from the database.
+- **Update Events**: Users can update event details such as name, date, and location.
+- **Delete Events**: Users can delete events from the database.
 
-![You will something like this in your terminal](https://user-images.githubusercontent.com/102179075/227304861-7ad633d7-5ec0-463a-8554-9e8b4c8caaad.png?raw=true)
+## Technologies
 
-4. Go to the server folder in the project (`cd server`) and run the command `npm install`
+- **Frontend**: 
+  - React
+  - React-Bootstrap
+  - Fetch API
+  
+- **Backend**:
+  - Node.js
+  - Express.js
+  - PostgreSQL
 
-5. Inside your server folder, create an .env file with `touch .env`
+## Installation
 
-⚠️ All these instructions should be inside your server folder ⚠️
+To set up the project locally, follow these steps:
 
-6. There are two ways to restore the DB dump file the project already contains: 
-
-A- If you have postgres set up postgres with an User:  
- * just run the command `psql -U postgres -f db.sql`. Make sure that you have your Postgres password on hand. The psql console will ask for your password. 
-
-B- If your initial configuration of postgres doesn't require a User:
-* just run the command `psql -f db.sql`
-
-7. Inside your server folder, open the file `.env.example` and copy the correct option for your configuation found there to your new .env file. 
-
-Here is what your `.env` might look like:
+### 1. Clone the repository:
+```
+git clone https://github.com/ChasVanDav/eventonica-project.git
+cd eventonica-project
 
 ```
-DB_URI="postgresql://localhost/techtonica"
-``` 
-For this template, the name of your db should be `techtonica`.
 
-⚠️ If you don't see a `techtonica` db, you can create one. From the terminal, navigate to the psql command line with `psql` and type `create database techtonica;` - don't forget the semicolon!! ⚠️
+### 2. Install dependencies for the backend:
+```
+cd backend
+npm install
 
-![You will something like this in your terminal](https://raw.githubusercontent.com/Yosolita1978/screenshoots/a4674c79f61b39547b068044c5e5f2bd8510a4b8/2023/H1/Screen%20Shot%202023-03-22%20at%2011.03.12%20PM.png)
+```
 
-8. Go to the client folder in the project (`cd .. and cd client`) and run the command `npm install`
+### 3. Set up PostgreSQL:
+```
+Create a PostgreSQL database.
+Update the connection details in backend/db.js.
 
-🔎 The `npm install` command installs the required dependencies defined in the package.json files and generates a node_modules folder with the installed modules.
+```
 
-⚡ Note: Using Vite we can avoid all the package deprecation warnings ⚡
+### 4. Install dependencies for the frontend:
+```
+cd ../frontend
+npm install
 
-9. If you want to run both servers using concurrently (which is already a npm dependency on the server) you can keep the script in the package.json in the server that reads `"dev": " concurrently 'npm start' 'cd .. && cd client && npm run dev' "`. If you run the command `npm run dev` from within your server, both the client and backend servers will start.
+```
 
-10. Go to localhost:5173 and you should see something like this  💪
+### 5. Run the application:
+Start the backend server:
+```
+cd backend
+npm start
 
-![You will something like this in your terminal.](https://raw.githubusercontent.com/Yosolita1978/screenshoots/2f6afdd2318809714071b7625776c195903758ca/2023/H1/Screen%20Shot%202023-03-22%20at%2010.40.36%20PM.png)
+```
 
-⚡ **Notes** ⚡  
-* React requires **Node >= 14.0.0** & **npm >= 5.6**
-* This template is using icons from `react-icons/io5` and `react-bootstrap` in the frontend. You can see all the frontend dependencies in the package.json on the `client` folder
-* Please note that your backend server will run from `port 8080`, and your frontend React server will run from `port 5173` (the default Vite port).
+Start the React frontend:
 
-* Confused about why use Vite? 🤔 → Check out the [Create a new React app with Vite](https://scrimba.com/articles/create-react-app-with-vite/)
+```
+cd ../frontend
+npm start
 
-⚙️ Links that you could need:
+```
 
-* The instructions for [pg](https://node-postgres.com/apis/pool)  
-* Setup [postgres correctly](https://github.com/Techtonica/curriculum/blob/main/databases/installing-postgresql.md)
+### Usage
+Once the application is running, you can perform the following actions:
 
+Add Events: Use the form on the main page to add a new event.
+View Events: A list of events is displayed on the main page.
+Edit Events: Click the edit icon on any event card to update event details.
+Delete Events: Use the delete button to remove an event.
 
+### API Endpoints
+Here are the available API endpoints for the backend:
+
+GET /api/events - Fetch all events
+POST /api/events - Add a new event
+PUT /api/events/:id - Update an event by ID
+DELETE /api/events/:id - Delete an event by ID
+
+### Contributing
+Contributions are welcome! To contribute:
+
+Fork the repository.
+Create a new branch for your feature or bug fix.
+Commit your changes and push your branch.
+Create a pull request with a detailed description of your changes.
