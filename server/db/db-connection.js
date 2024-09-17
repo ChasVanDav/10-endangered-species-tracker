@@ -4,3 +4,4 @@ const db = new Pool({
   });
 
   module.exports = db;
+  //this was the default setting for connecting to the database
