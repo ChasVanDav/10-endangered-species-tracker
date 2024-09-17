@@ -1,6 +1,10 @@
+* {
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: large;
+}
+
 .App {
   min-height: 100vh;
-  background-color: rgb(238, 232, 232);
   margin: 5px;
 }
 
@@ -8,18 +12,19 @@
   display: flex;
   gap: 3em;
   padding: 1em;
+  background-color:lavenderblush;
 }
 
-a.navbar-brand {
+/* a.navbar-brand {
   margin-inline-start: -5em;
-}
+} */
 
-.nav-link {
-  color: white !important;
-  margin-left: 5em;
-}
+/* .nav-link {
+  color: rgb(255, 255, 255) !important;
+  margin-left: 5em; 
+} */
 
-.list-students {
+.list-events {
   text-align: center;
   margin-top: 25px;
   flex: 1
@@ -40,9 +45,9 @@ form {
 
 input[type=text] {
   display: inline-block;
-  margin-top: -10px;
+  margin-top: 1px;
   width: 100%;
-  font-size: 15px;
+  font-size: medium;
   border-radius: 2px;
   border: 3px solid #98d0f1
 }
@@ -68,6 +73,6 @@ button.btn.btn-primary {
 }
 
 .card-body {
-  margin-left: 2em;
-  margin-right: 2em;
+  margin-left: 1em;
+  margin-right: 1em;
 }
