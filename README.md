@@ -1,5 +1,7 @@
 # Authentic Humans Tracker
 
+![Alt text](client/src/assets/iseeyouhuman.png)
+
 Welcome to the **Authentic Humans Tracker**—your go-to app for spotting the rarest species of all... **authentic humans**! You know, those who stay true to themselves in a world full of filters and fakery? Yep, this app helps you log your sightings of these elusive beings with all their unique traits—subspecies, name, initial sighting date, and backstory. Whether you bump into them in the wild or online, this app’s got you covered!
 
 This full-stack app is loaded with **CRUD** functionality (Create, Read, Update, Delete) to manage your authentic human sightings. And just like the humans it tracks, this app is authentic, using a **PostgreSQL database** to keep all your records safe and sound.
