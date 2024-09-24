@@ -10,34 +10,43 @@ const PORT = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 
-//endpoint for the route "/" --> "homepage" of the backend
+
 app.get('/', (req, res) => {
-    res.json({ message: 'The backend is up and running... go to /api/events for event data!' });
+    res.json({ message: 'The backend is up and running...' });
 });
 
-//GET request route '/api/events' --> events data fetched on the backend
-app.get('/api/events', async (req, res) => {
+//GET request route
+app.get('/authentic_humans', async (req, res) => {
     try {
-        const { rows: events } = await db.query('SELECT * FROM events');
+
+        const query = `
+        SELECT ah.*, TO_CHAR(asg.date, 'YYYY-MM-DD') AS date 
+        FROM authentic_humans AS ah
+        LEFT JOIN ah_sightings AS asg ON ah.id = asg.id
+    `;
+
+        const { rows: events } = await db.query(query);
         res.send(events);
     } catch (e) {
         return res.status(400).json({ e });
     }
 });
 
-// POST request --> adding a new event (eventid auto-generated on the backend through postgresql set up)
-app.post('/api/events', async (req, res) => {
+// POST request
+app.post('/authentic_humans', async (req, res) => {
     try {
         const newEvent = {
-             eventname: req.body.eventname,
-             date: req.body.date,
-             location: req.body.location
+             name: req.body.name,
+             species: req.body.species,
+             subspecies: req.body.subspecies,
+             description: req.body.description,
+             date: req.body.date
         };
-        console.log([newEvent.eventname, newEvent.date, newEvent.location]);
+        console.log([newEvent.name, newEvent.species, newEvent.subspecies, newEvent.date, newEvent.description]);
         const result = await db.query(
             //adding a new event in the database and return all events
-            'INSERT INTO events(eventname, date, location) VALUES($1, $2, $3) RETURNING *',
-            [newEvent.eventname, newEvent.date, newEvent.location],
+            'INSERT INTO authentic_humans(name, species, subspecies, date, description) VALUES($1, $2, $3, $4, $5) RETURNING *',
+            [newEvent.name, newEvent.species, newEvent.subspecies, newEvent.date, newEvent.description],
         );
         console.log(result.rows[0]);
         res.json(result.rows[0]);
@@ -50,12 +59,12 @@ app.post('/api/events', async (req, res) => {
 });
 
 // DELETE request  --> deleting an event (*stretch goal is adding an "are you sure?" pop up)
-app.delete('/api/events/:eventid', async (req, res) => {
+app.delete('/authentic_humans/:id', async (req, res) => {
     try {
-        const eventid = req.params.eventid;
+        const id = req.params.id;
         //remove from database
-        await db.query('DELETE FROM events WHERE eventid=$1', [eventid]);
-        console.log("From the delete request-url", eventid);
+        await db.query('DELETE FROM authentic_humans WHERE id=$1', [id]);
+        console.log("From the delete request-url", id);
         res.status(200).end();
     } catch (e) {
         console.log(e);
@@ -65,19 +74,19 @@ app.delete('/api/events/:eventid', async (req, res) => {
 });
 
 //PUT request --> updating an existing event 
-app.put('/api/events/:eventid', async (req, res) =>{
+app.put('/authentic_humans/:id', async (req, res) =>{
     console.log(req.params);
     //This will be the id that I want to find in the DB - the event to be updated
-    const eventid = req.params.eventid
-    const updatedEvent = { eventname: req.body.eventname, date: req.body.date, location: req.body.location}
+    const id = req.params.id
+    const updatedEvent = { name: req.body.name, species: req.body.species, subspecies: req.body.subspecies, date: req.body.date, description: req.body.description}
     // UPDATE events SET eventname = "something" WHERE eventid="16";
-    const query = `UPDATE events SET eventname=$1, date=$2, location=$3 WHERE eventid=${eventid} RETURNING *`;
-    const values = [updatedEvent.eventname, updatedEvent.date, updatedEvent.location];
+    const query = `UPDATE authentic_humans SET name=$1, species=$2, subspecies=$3, description=$4 WHERE id=${id} RETURNING *`;
+    const values = [updatedEvent.name, updatedEvent.species, updatedEvent.subspecies, updatedEvent.date, updatedEvent.description];
     try {
       const updated = await db.query(query, values);
       console.log(updated.rows[0]);
       res.send(updated.rows[0]);
-  //******stretch goal --> put the event back in order by eventid or date
+  //******stretch goal --> put in order by id or date
     }catch(e){
       console.log(e);
       return res.status(400).json({e})

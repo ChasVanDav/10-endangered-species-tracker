@@ -8,16 +8,15 @@ function MyNavBar(props) {
 
   return (
     <>
-    <Navbar bg="light" variant="light" sticky="top">
+    <Navbar sticky="top">
       <Container>
-        {/* <Navbar.Brand href="/">
-      
-        </Navbar.Brand> */}
-        {/* <Nav.Link >Your Link</Nav.Link> */}
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
+        <Navbar.Text>
+          tracking the  most endangered species:  '
+          </Navbar.Text>
           <Navbar.Text>
-            Signed in as: <a href="#login">Vanessa Davis</a>
+          /ɔːˈθɛntɪk/  /ˈhjuːmənz/'
           </Navbar.Text>
         </Navbar.Collapse>
       </Container>

@@ -21,7 +21,7 @@ const ListEvents = () => {
 
     // Function to fetch and load events from the API
     const loadEvents = () => {
-        fetch("http://localhost:8080/api/events") // Get data from the API
+        fetch("http://localhost:8080/authentic_humans") // Get data from the API
             .then(response => response.json()) // Turn the response into a JavaScript object
             .then(events => {
                 setEvents(events); // Save the events in our state
@@ -47,7 +47,7 @@ const ListEvents = () => {
 
     // Function to handle deleting an event
     const onDelete = (event) => {
-        fetch(`http://localhost:8080/api/events/${event.eventid}`, {
+        fetch(`http://localhost:8080/authentic_humans/${event.id}`, {
             method: "DELETE" // Tells the server to delete the event
         }).then(response => {
             if (response.ok) { // If the server says the deletion worked
@@ -69,17 +69,18 @@ const ListEvents = () => {
 
     // Filter the list of events based on what the user typed in the search box
     const filteredEvents = events.filter(event => 
-        event.eventname.toLowerCase().includes(state.searchTerm.toLowerCase())
+        event.name.toLowerCase().includes(state.searchTerm.toLowerCase())
     );
+
+    
 
     return (
         <div className="mybody">
             <div className="list-events">
-                <h2>Events</h2>
                 {/* Input box for searching events by name */}
                 <input 
                     type="text" 
-                    placeholder="Search by event name" 
+                    placeholder="start typing name of an authentic human" 
                     value={state.searchTerm} // The search box shows whatever is in searchTerm
                     onChange={handleSearchChange} // When the user types, update the search term
                 />
@@ -87,7 +88,7 @@ const ListEvents = () => {
                     {/* Show a list of filtered events (based on the search) */}
                     {filteredEvents.map((event) => (
                         <EventCard 
-                            key={event.eventid} // Give each event a unique key
+                            key={event.id} // Give each event a unique key
                             event={event} // Pass the event details to EventCard
                             toDelete={onDelete} // Pass the delete function
                             toUpdate={onUpdate} // Pass the update function

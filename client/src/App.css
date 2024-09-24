@@ -6,13 +6,17 @@
 .App {
   min-height: 100vh;
   margin: 5px;
+  background-color: bisque;
+
 }
 
 .mybody {
   display: flex;
   gap: 3em;
   padding: 1em;
-  background-color:lavenderblush;
+  background-image: url('src/assets/renaissance.jpg');
+  background-size: cover;
+  background-position: center; 
 }
 
 /* a.navbar-brand {
@@ -25,9 +29,10 @@
 } */
 
 .list-events {
-  text-align: center;
+  text-align: left;
   margin-top: 25px;
-  flex: 1
+  flex: 1;
+  color: bisque;
 }
 
 ul {
@@ -41,15 +46,16 @@ form {
   text-align: left;
   margin-top: 3em;
   flex: 1;
+  
 }
 
 input[type=text] {
   display: inline-block;
   margin-top: 1px;
   width: 100%;
-  font-size: medium;
+  font-size: inherit;
   border-radius: 2px;
-  border: 3px solid #98d0f1
+  border: 4px solid green;
 }
 
 button.btn.btn-primary {
@@ -73,6 +79,14 @@ button.btn.btn-primary {
 }
 
 .card-body {
-  margin-left: 1em;
-  margin-right: 1em;
+  margin-bottom: .2em;
+  background-color:rgb(55, 89, 55);
+}
+
+/* .justify-content-end {
+  justify-content:flex-start;
+} */
+
+.navbar {
+  color:bisque;
 }

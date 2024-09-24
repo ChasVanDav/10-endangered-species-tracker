@@ -5,42 +5,48 @@ const EventForm = ({ onSaveEvent, editingEvent, onUpdateEvent }) => {
     // Set up state for the form. If we’re editing an event, start with its data; 
     // otherwise, start with an empty event object.
     const [event, setEvent] = useState(editingEvent || {
-        eventid: "",  // Event ID starts empty (this will be used if editing an existing event)
-        eventname: "",
-        date: "",
-        location: ""
+        id: "",  // Event ID starts empty (this will be used if editing an existing event)
+        species: "",
+        subspecies: "",
+        name: "",
+        description: ""
     });
 
     // Whenever editingEvent changes (like when we switch to a different event to edit), 
     // update the form fields with the new event data, or reset if no event is passed.
     useEffect(() => {
-        setEvent(editingEvent || { eventid: "", eventname: "", date: "", location: "" });
+        setEvent(editingEvent || { id: "", name: "", species: "", subspecies: "", description: "" });
     }, [editingEvent]);
 
     // These three functions handle updating the form fields when the user types.
     const handleNameChange = (event) => {
-        const eventname = event.target.value; // Get the value the user entered for event name
-        setEvent((prevEvent) => ({ ...prevEvent, eventname })); // Update just the eventname
+        const name = event.target.value; // Get the value the user entered for event name
+        setEvent((prevEvent) => ({ ...prevEvent, name })); // Update just the eventname
     };
 
-    const handleDateChange = (event) => {
-        const date = event.target.value; // Get the date value from the input
-        setEvent((prevEvent) => ({ ...prevEvent, date })); // Update the date in our state
+    const handleSpeciesChange = (event) => {
+        const species = event.target.value; 
+        setEvent((prevEvent) => ({ ...prevEvent, species })); 
     };
 
-    const handleLocationChange = (event) => {
-        const location = event.target.value; // Get the location from the input
-        setEvent((prevEvent) => ({ ...prevEvent, location })); // Update location in our state
+    const handleSubspeciesChange = (event) => {
+        const subspecies = event.target.value; // Get the value the user entered for event name
+        setEvent((prevEvent) => ({ ...prevEvent, subspecies })); // Update just the eventname
+    };
+
+    const handleDescriptionChange = (event) => {
+        const description = event.target.value; // Get the location from the input
+        setEvent((prevEvent) => ({ ...prevEvent, description })); // Update location in our state
     };
 
     // This function resets the form to empty fields, clearing the current event.
     const clearForm = () => {
-        setEvent({ eventid: "", eventname: "", date: "", location: "" });
+        setEvent({ id: "", name: "", species: "", subspecies: "", description: "" });
     };
 
     // This function sends a POST request to add a new event to the backend.
     const postEvent = (newEvent) => {
-        return fetch("http://localhost:8080/api/events", {
+        return fetch("http://localhost:8080/authentic_humans", {
             method: "POST", // Tells the server we want to add something new
             headers: { "Content-Type": "application/json" }, // We're sending JSON data
             body: JSON.stringify(newEvent), // Convert the new event data to JSON
@@ -54,7 +60,7 @@ const EventForm = ({ onSaveEvent, editingEvent, onUpdateEvent }) => {
 
     // This function sends a PUT request to update an existing event on the backend.
     const putEvent = (toEditEvent) => {
-        return fetch(`http://localhost:8080/api/events/${toEditEvent.eventid}`, {
+        return fetch(`http://localhost:8080/authentic_humans/${toEditEvent.id}`, {
             method: "PUT", // Tells the server we want to update something
             headers: { "Content-Type": "application/json" }, // We're sending JSON data
             body: JSON.stringify(toEditEvent), // Convert the event we're editing into JSON
@@ -69,7 +75,7 @@ const EventForm = ({ onSaveEvent, editingEvent, onUpdateEvent }) => {
     // This handles form submission, deciding whether we're adding or updating an event.
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevent the form from doing a full page reload
-        if (event.eventid) {
+        if (event.id) {
             // If the event already has an ID, we're editing it, so we update it.
             putEvent(event);
         } else {
@@ -82,56 +88,67 @@ const EventForm = ({ onSaveEvent, editingEvent, onUpdateEvent }) => {
         <Form className='form-events' onSubmit={handleSubmit}>
             <Form.Group>
                 {/* Only show the Event ID field if we are editing an existing event */}
-                {event.eventid && (
+                {event.id && (
                     <>
-                        <Form.Label>Event ID</Form.Label>
+                        <Form.Label>ID</Form.Label>
                         <input
                             type="text"
-                            placeholder="Event ID"
-                            value={event.eventid}
-                            disabled  // We don't want the user to change the ID
+                            placeholder="ID"
+                            value={event.id}
+                            // disabled  // We don't want the user to change the ID
                         />
                     </>
                 )}
                 {/* Input field for the event name */}
-                <Form.Label>Event Name</Form.Label>
+                <Form.Label>Name</Form.Label>
                 <input
                     type="text"
-                    placeholder="Event Name"
+                    placeholder="Name"
                     required  // Make sure the user enters something here
-                    value={event.eventname}  // Link this input to the eventname state
+                    value={event.name}  // Link this input to the eventname state
                     onChange={handleNameChange}  // Update eventname when the user types
                 />
             </Form.Group>
             <Form.Group>
-                {/* Input field for the event date */}
-                <Form.Label>Date</Form.Label>
+            <Form.Label>Species</Form.Label>
                 <input
-                    type="date"
-                    placeholder="Date"
-                    required  // Make sure the user picks a date
-                    value={event.date}  // Link this input to the date state
-                    onChange={handleDateChange}  // Update the date when the user picks a new one
+                    type="text"
+                    placeholder="e.g. authentic human"
+                    required  // Make sure the user enters something here
+                    value={event.species}  // Link this input to the eventname state
+                    onChange={handleSpeciesChange}  // Update eventname when the user types
+                />
+            </Form.Group>
+            <Form.Group>
+            <Form.Label>Subspecies</Form.Label>
+                <input
+                    type="text"
+                    placeholder="e.g. AUTHENTICALLY GENEROUS"
+                    required  // Make sure the user enters something here
+                    value={event.subspecies}  // Link this input to the eventname state
+                    onChange={handleSubspeciesChange}  // Update eventname when the user types
                 />
             </Form.Group>
             <Form.Group>
                 {/* Input field for the event location */}
-                <Form.Label>Location</Form.Label>
+                <Form.Label>Description</Form.Label>
                 <input
                     type="text"
-                    placeholder="Location"
+                    placeholder="Description"
                     required  // Make sure the user enters a location
-                    value={event.location}  // Link this input to the location state
-                    onChange={handleLocationChange}  // Update location when the user types
+                    value={event.description}  // Link this input to the location state
+                    onChange={handleDescriptionChange}  // Update location when the user types
                 />
             </Form.Group>
             <Form.Group>
                 {/* The button text changes based on whether we're adding or editing an event */}
-                <Button type="submit" variant="outline-success">
-                    {event.eventid ? "Edit Event" : "Add Event"}
+                <Button type="submit" variant="outline-success"
+                style={{ padding: '0.6em', backgroundColor: 'bisque', color: 'green'  }}
+                >
+                    {event.id ? "Edit Sighting" : "Add Sighting"}
                 </Button>
                 {/* Show the cancel button only when editing an event, to reset the form */}
-                {event.eventid && (
+                {event.id && (
                     <Button type="button" variant="outline-warning" onClick={clearForm}>
                         Cancel
                     </Button>
