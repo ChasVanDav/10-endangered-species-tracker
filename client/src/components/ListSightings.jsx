@@ -8,6 +8,7 @@ const ListSightings = () => {
     const [editingSighting, setEditingSighting] = useState(null);
     const [state, dispatch] = useReducer(searchReducer, { searchTerm: '' });
 
+    // Load all sightings from the server (including date from ah_sightings)
     const loadSightings = () => {
         fetch("http://localhost:8080/authentic_humans")
             .then(response => response.json())
@@ -20,14 +21,32 @@ const ListSightings = () => {
         loadSightings();
     }, []);
 
+    // Add new sighting
     const onSaveSighting = (newSighting) => {
-        setSightings((sightings) => [...sightings, newSighting]);
+        fetch("http://localhost:8080/authentic_humans", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newSighting), 
+        })
+        .then(response => response.json())
+        .then(savedSighting => {
+            setSightings((sightings) => [...sightings, savedSighting]);
+        })
+        .catch(error => console.error("Error saving sighting:", error));
     };
 
+    // Update existing sighting
     const updateSighting = (updatedSighting) => {
-        loadSightings();
+        fetch(`http://localhost:8080/authentic_humans/${updatedSighting.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedSighting),
+        })
+        .then(() => loadSightings()) // Reload sightings after update
+        .catch(error => console.error("Error updating sighting:", error));
     };
 
+    // Delete sighting by ID (DELETE request)
     const onDelete = (sighting) => {
         fetch(`http://localhost:8080/authentic_humans/${sighting.id}`, {
             method: "DELETE"
@@ -35,17 +54,20 @@ const ListSightings = () => {
             if (response.ok) {
                 loadSightings();
             }
-        });
+        }).catch(error => console.error("Error deleting sighting:", error));
     };
 
+    // Set a sighting to be edited
     const onUpdate = (toUpdateSighting) => {
         setEditingSighting(toUpdateSighting);
     };
 
+    // Handle search term change
     const handleSearchChange = (event) => {
         dispatch({ type: 'SET_SEARCH_TERM', payload: event.target.value });
     };
 
+    // Filter sightings based on search term
     const filteredSightings = sightings.filter(sighting => 
         sighting.name.toLowerCase().includes(state.searchTerm.toLowerCase())
     );
@@ -81,6 +103,4 @@ const ListSightings = () => {
 };
 
 export default ListSightings;
-
-
 
