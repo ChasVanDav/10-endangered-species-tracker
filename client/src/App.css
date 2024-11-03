@@ -11,10 +11,10 @@
 
 .mybody {
   display: flex;
-  gap: 3em;
+  gap: 3em; /* Space between the sightings list and the form */
   padding: 3em;
   background-image: url('src/assets/renaissance.jpg');
-  background-size:contain;
+  background-size: contain;
   background-position: center; 
 }
 
@@ -28,7 +28,7 @@
   text-align: left;
   margin-top: 25px;
   color: bisque;
-  width: 70%;
+  width: 70%; /* Width of the sightings list */
 }
 
 ul {
@@ -37,10 +37,10 @@ ul {
 
 form {
   text-align: left;
-  margin:2em;
+  margin: 2em;
   padding: 1em;
-  width: 60%;
-  color:darkgreen;
+  width: 30%; /* Width of the form */
+  color: darkgreen;
   background-color: bisque;
 }
 
@@ -58,13 +58,13 @@ input[type=date] {
 
 button.btn.btn-primary {
   margin-top: 25px; 
-  color:bisque;
+  color: bisque;
   background-color: darkgreen;
 } 
 
 button.btn.btn-secondary {
   margin-top: 25px; 
-  color:bisque;
+  color: bisque;
   background-color: darkred;
 } 
 
