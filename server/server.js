@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import db from './db/db-connection.js';
 
+
 dotenv.config();
 
 const app = express();
@@ -118,11 +119,15 @@ app.delete('/sightings/:id', async (req, res) => {
 });
 
 // Export the app and a function to start the server
-const startServer = () => {
-    const server = app.listen(8080, () => {
-        console.log('Server is listening on 8080');
-    });
-    return { app, server };
-};
+// const startServer = () => {
+//     const server = app.listen(8080, () => {
+//         console.log('Server is listening on 8080');
+//     });
+//     return { app, server };
+// };
 
-export default startServer;
+// export default startServer;
+
+app.listen(PORT, () => {
+    console.log(`Server is listening on ${PORT}`);
+});
