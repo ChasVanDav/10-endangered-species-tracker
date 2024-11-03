@@ -1,24 +1,12 @@
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
+import React from 'react';
+import { Navbar, Nav } from 'react-bootstrap';
 
-function MyNavBar(props) {
-  return (
-    <>
-      <Navbar sticky="top" style={{ backgroundColor: 'bisque' }}>
-        <Container>
-          <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
-            <Navbar.Text>
-              tracking the most endangered species: '
-            </Navbar.Text>
-            <Navbar.Text>
-              /ɔːˈθɛntɪk/  /ˈhjuːmənz/'
-            </Navbar.Text>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </>
-  );
-}
+const MyNavBar = () => {
+    return (
+        <Navbar bg="light" variant="light" expand="lg">
+            <Navbar.Brand href="#home">Endangered Species Sighting Tracker</Navbar.Brand>
+        </Navbar>
+    );
+};
 
 export default MyNavBar;

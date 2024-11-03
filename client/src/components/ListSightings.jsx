@@ -1,103 +1,83 @@
-import React, { useState, useEffect, useReducer } from 'react'; 
-import SightingForm from './SightingForm'; 
-import SightingCard from './SightingCard'; 
-import { searchReducer } from './searchReducer'; 
+import React, { useEffect, useState } from 'react';
+import SightingForm from './SightingForm';
+import { Table, Button } from 'react-bootstrap';
 
 const ListSightings = () => {
     const [sightings, setSightings] = useState([]);
     const [editingSighting, setEditingSighting] = useState(null);
-    const [state, dispatch] = useReducer(searchReducer, { searchTerm: '' });
-
-    // Load all sightings from the server (including date from ah_sightings)
-    const loadSightings = () => {
-        fetch("http://localhost:8080/authentic_humans")
-            .then(response => response.json())
-            .then(sightings => {
-                setSightings(sightings);
-            });
-    };
 
     useEffect(() => {
-        loadSightings();
+        fetchSightings();
     }, []);
 
-    // Add new sighting
-    const onSaveSighting = (newSighting) => {
-        fetch("http://localhost:8080/authentic_humans", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newSighting), 
-        })
-        .then(response => response.json())
-        .then(savedSighting => {
-            setSightings((sightings) => [...sightings, savedSighting]);
-        })
-        .catch(error => console.error("Error saving sighting:", error));
+    const fetchSightings = () => {
+        fetch('http://localhost:8080/sightings')
+            .then(response => response.json())
+            .then(data => setSightings(data))
+            .catch(error => console.error('Error fetching sightings:', error));
     };
 
-    // Update existing sighting
-    const updateSighting = (updatedSighting) => {
-        fetch(`http://localhost:8080/authentic_humans/${updatedSighting.id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updatedSighting),
-        })
-        .then(() => loadSightings()) // Reload sightings after update
-        .catch(error => console.error("Error updating sighting:", error));
+    const handleSaveSighting = (newSighting) => {
+        setSightings((prevSightings) => [newSighting, ...prevSightings]);
     };
 
-    // Delete sighting by ID (DELETE request)
-    const onDelete = (sighting) => {
-        fetch(`http://localhost:8080/authentic_humans/${sighting.id}`, {
-            method: "DELETE"
-        }).then(response => {
-            if (response.ok) {
-                loadSightings();
-            }
-        }).catch(error => console.error("Error deleting sighting:", error));
+    const handleUpdateSighting = (updatedSighting) => {
+        setSightings((prevSightings) => 
+            prevSightings.map(sighting => 
+                sighting.id === updatedSighting.id ? updatedSighting : sighting
+            )
+        );
     };
 
-    // Set a sighting to be edited
-    const onUpdate = (toUpdateSighting) => {
-        setEditingSighting(toUpdateSighting);
+    const handleEditSighting = (sighting) => {
+        setEditingSighting(sighting);
     };
 
-    // Handle search term change
-    const handleSearchChange = (event) => {
-        dispatch({ type: 'SET_SEARCH_TERM', payload: event.target.value });
+    const handleDeleteSighting = (id) => {
+        fetch(`http://localhost:8080/sightings/${id}`, { method: 'DELETE' })
+            .then(() => {
+                setSightings((prevSightings) => prevSightings.filter(sighting => sighting.id !== id));
+            })
+            .catch(error => console.error('Error deleting sighting:', error));
     };
-
-    // Filter sightings based on search term
-    const filteredSightings = sightings.filter(sighting => 
-        sighting.name.toLowerCase().includes(state.searchTerm.toLowerCase())
-    );
 
     return (
-        <div className="mybody">
-            <div className="list-sightings">
-                <input 
-                    type="text" 
-                    placeholder="start typing the name of an authentic human" 
-                    value={state.searchTerm} 
-                    onChange={handleSearchChange} 
-                />
-                <div>
-                    {filteredSightings.map((sighting) => (
-                        <SightingCard 
-                            key={sighting.id} 
-                            sighting={sighting} 
-                            toDelete={onDelete} 
-                            toUpdate={onUpdate} 
-                        />
-                    ))}
-                </div>
-            </div>
+        <div>
             <SightingForm 
-                key={editingSighting ? editingSighting.id : null}
-                onSaveSighting={onSaveSighting} 
+                onSaveSighting={handleSaveSighting} 
                 editingSighting={editingSighting} 
-                onUpdateSighting={updateSighting} 
+                onUpdateSighting={handleUpdateSighting}
             />
+
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Species</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Notes</th>
+                        <th>Photo</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {sightings.map(sighting => (
+                        <tr key={sighting.id}>
+                            <td>{sighting.id}</td>
+                            <td>{sighting.species_name}</td>
+                            <td>{new Date(sighting.sighting_date).toLocaleDateString()}</td>
+                            <td>{sighting.location}</td>
+                            <td>{sighting.notes}</td>
+                            <td>{sighting.photo_url && <img src={sighting.photo_url} alt="photo of endangered animal" style={{ width: '100px' }} />}</td>
+                            <td>
+                                <Button variant="warning" onClick={() => handleEditSighting(sighting)}>Edit</Button>
+                                <Button variant="danger" onClick={() => handleDeleteSighting(sighting.id)}>Delete</Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
         </div>
     );
 };
