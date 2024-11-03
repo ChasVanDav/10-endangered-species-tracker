@@ -1,7 +1,20 @@
 import request from 'supertest';
-import app from '../app';
+import startServer from '../server.js';
+import db from '../db/db-connection.js';
 
 describe('Sightings API', () => {
+    let app;
+    let server;
+
+    beforeAll(() => {
+        ({ app, server } = startServer());
+    });
+
+    afterAll(async () => {
+        await db.end();
+        server.close(); 
+    });
+
     it('should create a new sighting', async () => {
         const newSighting = {
             species_id: '1',
@@ -18,7 +31,7 @@ describe('Sightings API', () => {
             .expect(201);
 
         expect(response.body).toHaveProperty('id');
-        expect(response.body.species_id).toBe(newSighting.species_id);
+        expect(response.body.species_id).toBe(Number(newSighting.species_id));
     });
 
     it('should return all sightings', async () => {

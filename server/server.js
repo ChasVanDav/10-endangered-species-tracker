@@ -69,7 +69,8 @@ app.post('/sightings', async (req, res) => {
             VALUES($1, $2, $3, $4, $5) RETURNING *;
         `;
         const { rows } = await db.query(query, [species_id, sighting_date, location, notes, photo_url]);
-        res.json(rows[0]);
+
+        res.status(201).json(rows[0]);
     } catch (e) {
         res.status(400).json({ error: e.message });
     }
@@ -116,7 +117,12 @@ app.delete('/sightings/:id', async (req, res) => {
     }
 });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is listening on ${PORT}`);
-});
+// Export the app and a function to start the server
+const startServer = () => {
+    const server = app.listen(8080, () => {
+        console.log('Server is listening on 8080');
+    });
+    return { app, server };
+};
+
+export default startServer;
