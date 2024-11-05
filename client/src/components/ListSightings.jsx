@@ -69,6 +69,7 @@ const ListSightings = () => {
                             <td>{new Date(sighting.sighting_date).toLocaleDateString()}</td>
                             <td>{sighting.location}</td>
                             <td>{sighting.notes}</td>
+                            {/* adding photos to each based on photo url (google drive embed link) in database table */}
                             <td>{sighting.photo_url && <img src={sighting.photo_url} alt="photo of endangered animal" style={{ width: '100px' }} />}</td>
                             <td>
                                 <Button variant="warning" onClick={() => handleEditSighting(sighting)}>Edit</Button>
