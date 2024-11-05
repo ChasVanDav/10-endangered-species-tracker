@@ -119,15 +119,15 @@ app.delete('/sightings/:id', async (req, res) => {
 });
 
 // Export the app and a function to start the server
-// const startServer = () => {
-//     const server = app.listen(8080, () => {
-//         console.log('Server is listening on 8080');
-//     });
-//     return { app, server };
-// };
+const Server = () => {
+    const server = app.listen(8080, () => {
+        console.log('Server is listening on 8080');
+    });
+    return { app, server };
+};
 
-// export default startServer;
+export default Server;
 
-app.listen(PORT, () => {
-    console.log(`Server is listening on ${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server is listening on ${PORT}`);
+// });
