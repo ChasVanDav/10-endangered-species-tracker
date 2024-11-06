@@ -62,21 +62,34 @@ const ListSightings = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {sightings.map(sighting => (
-                        <tr key={sighting.id}>
-                            <td>{sighting.id}</td>
-                            <td>{sighting.species_name}</td>
-                            <td>{new Date(sighting.sighting_date).toLocaleDateString()}</td>
-                            <td>{sighting.location}</td>
-                            <td>{sighting.notes}</td>
-                            {/* adding photos to each based on photo url (google drive embed link) in database table */}
-                            <td>{sighting.photo_url && <img src={sighting.photo_url} alt="photo of endangered animal" style={{ width: '100px' }} />}</td>
-                            <td>
-                                <Button variant="warning" onClick={() => handleEditSighting(sighting)}>Edit</Button>
-                                <Button variant="danger" onClick={() => handleDeleteSighting(sighting.id)}>Delete</Button>
-                            </td>
-                        </tr>
-                    ))}
+                    {sightings.map(sighting => () => {
+                        // Location of shareable google endpoint. This may be disabled at some point. Google has disabled most ways to hotlink to their images
+                        let photoUrl = 'https://lh3.googleusercontent.com/d/';
+                        // Split on ? and & so we can parse the query parameters and get the unique id. If any of object is null set empty array.
+                        const urlSplit = sighting?.photo_url?.split(/[?&]/)?? [];
+                        for(const value of urlSplit) {
+                            if (value.startsWith('id')) {
+                                // This will return endpoint/undefined if this url is malformed/incorrect
+                                photoUrl += value.split('=')[1];
+                                break;
+                            }
+                        }
+                        return (
+                            <tr key={sighting.id}>
+                                <td>{sighting.id}</td>
+                                <td>{sighting.species_name}</td>
+                                <td>{new Date(sighting.sighting_date).toLocaleDateString()}</td>
+                                <td>{sighting.location}</td>
+                                <td>{sighting.notes}</td>
+                                {/* adding photos to each based on photo url (google drive embed link) in database table */}
+                                <td>{sighting.photo_url && <img src={photoUrl} alt="photo of endangered animal" style={{ width: '100px' }} />}</td>
+                                <td>
+                                    <Button variant="warning" onClick={() => handleEditSighting(sighting)}>Edit</Button>
+                                    <Button variant="danger" onClick={() => handleDeleteSighting(sighting.id)}>Delete</Button>
+                                </td>
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </Table>
         </div>
