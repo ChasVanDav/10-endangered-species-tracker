@@ -83,13 +83,11 @@ const SightingForm = ({ onSaveSighting, editingSighting, onUpdateSighting }) => 
     return (
         <Form className='form-sightings' onSubmit={handleSubmit}>
             <Form.Label>Have you spotted an endangered species? Record it here!</Form.Label>
-            <Form.Label>Species ID</Form.Label><br></br>
-            <Form.Label>1 = authentic_humans</Form.Label><br></br>
-            <Form.Label>2 = cuddly_mammals</Form.Label><br></br>
-            <Form.Label>3 = necessary_insects</Form.Label>
+            
             <Form.Group>
-                <Form.Label>Species ID</Form.Label>
+                <Form.Label htmlFor="species_id">Species ID</Form.Label>
                 <Form.Control 
+                    id="species_id"
                     type="text" 
                     required 
                     name="species_id"
@@ -98,10 +96,11 @@ const SightingForm = ({ onSaveSighting, editingSighting, onUpdateSighting }) => 
                     placeholder="Enter species ID"
                 />
             </Form.Group>
-
+    
             <Form.Group>
-                <Form.Label>Date</Form.Label>
+                <Form.Label htmlFor="sighting_date">Date</Form.Label>
                 <input
+                    id="sighting_date"
                     type="date"
                     required
                     name="sighting_date"
@@ -109,10 +108,11 @@ const SightingForm = ({ onSaveSighting, editingSighting, onUpdateSighting }) => 
                     onChange={handleInputChange}
                 />
             </Form.Group>
-
+    
             <Form.Group>
-                <Form.Label>Location</Form.Label>
+                <Form.Label htmlFor="location">Location</Form.Label>
                 <Form.Control 
+                    id="location"
                     type="text" 
                     required 
                     name="location"
@@ -121,10 +121,11 @@ const SightingForm = ({ onSaveSighting, editingSighting, onUpdateSighting }) => 
                     placeholder="Enter location of sighting"
                 />
             </Form.Group>
-
+    
             <Form.Group>
-                <Form.Label>Notes</Form.Label>
+                <Form.Label htmlFor="notes">Notes</Form.Label>
                 <Form.Control 
+                    id="notes"
                     type="text" 
                     required 
                     name="notes"
@@ -133,10 +134,11 @@ const SightingForm = ({ onSaveSighting, editingSighting, onUpdateSighting }) => 
                     placeholder="Additional notes"
                 />
             </Form.Group>
-
+    
             <Form.Group>
-                <Form.Label>Photo URL</Form.Label>
+                <Form.Label htmlFor="photo_url">Photo URL</Form.Label>
                 <Form.Control 
+                    id="photo_url"
                     type="text" 
                     name="photo_url"
                     value={sighting.photo_url} 
@@ -144,7 +146,7 @@ const SightingForm = ({ onSaveSighting, editingSighting, onUpdateSighting }) => 
                     placeholder="Optional photo URL"
                 />
             </Form.Group>
-
+    
             <Button variant="primary" type="submit">
                 {editingSighting ? "Update Sighting" : "Add Sighting"}
             </Button>
@@ -153,7 +155,7 @@ const SightingForm = ({ onSaveSighting, editingSighting, onUpdateSighting }) => 
                 Cancel
             </Button>
         </Form>
-    );
+    );    
 };
 
 export default SightingForm;
